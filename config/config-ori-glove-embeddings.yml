@@ -1,5 +1,5 @@
 data: data/newsela
-save_model: exp/newsela_base_model
+save_model: exp/base_nmt_model/newsela_base_model
 save_checkpoint_steps: 10000
 keep_checkpoint: 10
 seed: 13
