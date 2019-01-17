@@ -1,0 +1,37 @@
+data: data/newsela
+save_model: exp/newsela_base_model
+save_checkpoint_steps: 10000
+keep_checkpoint: 10
+seed: 13
+train_steps: 500000
+valid_steps: 10000
+warmup_steps: 8000
+report_every: 100
+
+decoder_type: rnn
+encoder_type: rnn
+
+global_attention: dot
+
+src_word_vec_size: 300
+tgt_word_vec_size: 300
+layers: 2
+rnn_size: 256
+rnn_type: "LSTM"
+
+pre_word_vecs_enc: "data/embeddings.enc.pt"
+pre_word_vecs_dec: "data/embeddings.dec.pt"
+
+dropout: 0.2
+label_smoothing: 0
+
+batch_size: 86
+optim: adam
+learning_rate: 0.001
+learning_rate_decay: 0.7
+
+
+world_size: 2
+gpu_ranks:
+- 0
+- 1

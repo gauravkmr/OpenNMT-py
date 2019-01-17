@@ -1,0 +1,39 @@
+####BASELINE OPENNMT MODEL WITH HYPERPARAMETERS CLOSE TO SOCKEYE BASE SEQ2SEQ MODEL####
+
+#Clone OpenNMT-py repo
+git clone https://github.com/gauravkmr/OpenNMT-py.git
+
+#Setup environment
+conda create -n nmt_env python=3.6
+source activate nmt_env
+pip install -r requirements.txt
+
+#Make sure you are inside OpenNMT-py home directory
+
+#Copy Newsela data and glove embeddings
+mkdir exp
+cd exp
+mkdir base_nmt_model
+cd base_nmt_model
+cp -r /data1/reno/newsela_Zhang_Lapata_splits .
+mkdir embeddings
+cd embeddings
+cp /data1/embeddings/eng/glove.6B.300d.txt .
+
+
+cd to OpenNMT-py home directory
+
+
+#prepare data
+python preprocess.py -train_src exp/base_nmt_model/newsela_Zhang_Lapata_splits/V0V4_V1V4_V2V4_V3V4_V0V3_V0V2_V1V3.aner.ori.train.src -train_tgt exp/base_nmt_model/newsela_Zhang_Lapata_splits/V0V4_V1V4_V2V4_V3V4_V0V3_V0V2_V1V3.aner.ori.train.dst -valid_src exp/base_nmt_model/newsela_Zhang_Lapata_splits/V0V4_V1V4_V2V4_V3V4_V0V3_V0V2_V1V3.aner.ori.valid.src -valid_tgt exp/base_nmt_model/newsela_Zhang_Lapata_splits/V0V4_V1V4_V2V4_V3V4_V0V3_V0V2_V1V3.aner.ori.valid.dst -save_data data/newsela
+
+#prepare embeddings
+#move embeddings_to_torch.py from tools/ to OpenNMT-py/
+cp tools/embeddings_to_torch.py .
+python embeddings_to_torch.py -emb_file_enc "exp/base_nmt_model/embeddings/glove.6B.300d.txt" -emb_file_dec "exp/base_nmt_model/embeddings/glove.6B.300d.txt"  -dict_file "data/newsela.vocab.pt" -output_file "data/embeddings".
+
+#train
+python train -config config/config-ori-glove-embeddings.yml
+
+#translate
+python translate.py -model exp/newsela_base_model_step_500000.pt -src exp/base_nmt_model/newsela_Zhang_Lapata_splits/V0V4_V1V4_V2V4_V3V4_V0V3_V0V2_V1V3.aner.ori.test.src -output exp/base_nmt_model/newsela_Zhang_Lapata_splits/pred.txt -replace_unk -verbose
