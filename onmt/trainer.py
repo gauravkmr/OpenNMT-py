@@ -14,7 +14,7 @@ import onmt.inputters as inputters
 import onmt.utils
 
 from onmt.utils.logging import logger
-
+from onmt.models.reinforce import ReinforceModel
 
 def build_trainer(opt, device_id, model, fields,
                   optim, data_type, model_saver=None):
@@ -232,11 +232,18 @@ class Trainer(object):
                 tgt = inputters.make_features(batch, 'tgt')
 
                 # F-prop through the model.
-                outputs, attns = self.model(src, tgt, src_lengths)
+                if type(self.model) == ReinforceModel:
+                    loss, batch_stats, dec_state = self.model(src, tgt,
+                                                              src_lengths,
+                                                              batch,
+                                                              self.train_loss,
+                                                              dec_state=None)
+                else:
+                    outputs, attns = self.model(src, tgt, src_lengths)
 
-                # Compute loss.
-                batch_stats = self.valid_loss.monolithic_compute_loss(
-                    batch, outputs, attns)
+                    # Compute loss.
+                    batch_stats = self.valid_loss.monolithic_compute_loss(
+                        batch, outputs, attns)
 
                 # Update statistics.
                 stats.update(batch_stats)
@@ -260,6 +267,7 @@ class Trainer(object):
                 trunc_size = target_size
 
             bptt = False
+            dec_state = None
             src = inputters.make_features(batch, 'src', self.data_type)
             if self.data_type == 'text':
                 _, src_lengths = batch.src
@@ -278,14 +286,23 @@ class Trainer(object):
                 # 2. F-prop all but generator.
                 if self.grad_accum_count == 1:
                     self.model.zero_grad()
-                outputs, attns = \
-                    self.model(src, tgt, src_lengths, bptt=bptt)
-                bptt = True
 
-                # 3. Compute loss in shards for memory efficiency.
-                batch_stats = self.train_loss.sharded_compute_loss(
-                    batch, outputs, attns, j,
-                    trunc_size, self.shard_size, normalization)
+                if type(self.model) == ReinforceModel:
+                    #batch.alignment = batch.alignment[j + 1: j + trunc_size]
+                    loss, batch_stats, dec_state = self.model(src, tgt, src_lengths, batch,
+                                                              self.train_loss,
+                                                              dec_state)
+                    loss.div(normalization).backward()
+                else:
+                    outputs, attns = \
+                        self.model(src, tgt, src_lengths, bptt=bptt)
+                    bptt = True
+
+                    # 3. Compute loss in shards for memory efficiency.
+                    batch_stats = self.train_loss.sharded_compute_loss(
+                        batch, outputs, attns, j,
+                        trunc_size, self.shard_size, normalization)
+
                 total_stats.update(batch_stats)
                 report_stats.update(batch_stats)
 

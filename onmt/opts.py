@@ -161,6 +161,7 @@ def model_opts(parser):
               help='Train a coverage attention layer.')
     group.add('--lambda_coverage', '-lambda_coverage', type=float, default=1,
               help='Lambda value for coverage.')
+    group.add('--reinforce', '-reinforce', action='store_true', help='Use reinforcement model')
 
 
 def preprocess_opts(parser):

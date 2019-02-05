@@ -19,6 +19,9 @@ from onmt.encoders.image_encoder import ImageEncoder
 from onmt.decoders.decoder import InputFeedRNNDecoder, StdRNNDecoder
 from onmt.decoders.transformer import TransformerDecoder
 from onmt.decoders.cnn_decoder import CNNDecoder
+from onmt.decoders.reinforce import ReinforceDecoder
+
+from onmt.models.reinforce import ReinforceModel
 
 from onmt.modules import Embeddings, CopyGenerator
 from onmt.utils.misc import use_gpu
@@ -124,6 +127,8 @@ def build_decoder(opt, embeddings):
             opt.dropout,
             embeddings
         )
+    elif opt.reinforce:
+        decoder = ReinforceDecoder(opt, embeddings)
     else:
         dec_class = InputFeedRNNDecoder if opt.input_feed else StdRNNDecoder
         decoder = dec_class(
@@ -232,11 +237,20 @@ def build_base_model(model_opt, fields, gpu, checkpoint=None):
 
         tgt_emb.word_lut.weight = src_emb.word_lut.weight
 
+    logger.info("Creating decoder.")
     decoder = build_decoder(model_opt, tgt_emb)
+    logger.info("Decoder created.")
 
     # Build NMTModel(= encoder + decoder).
     device = torch.device("cuda" if gpu else "cpu")
-    model = onmt.models.NMTModel(encoder, decoder)
+
+    logger.info('Creating model.')
+    if model_opt.reinforce:
+        model = ReinforceModel(encoder, decoder)
+    else:
+        model = onmt.models.NMTModel(encoder, decoder)
+    logger.info('Model created.')
+    #exit(1)
 
     # Build Generator.
     if not model_opt.copy_attn:

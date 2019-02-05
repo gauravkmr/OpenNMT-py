@@ -118,6 +118,7 @@ class Translator(object):
         self.logger = logger
 
         self.use_filter_pred = False
+        self.reinforce = opt.reinforce
 
         # for debugging
         self.beam_trace = self.dump_beam != ""
@@ -814,6 +815,8 @@ class Translator(object):
             )
             out = out.view(batch_size, beam_size, -1)
             beam_attn = beam_attn.view(batch_size, beam_size, -1)
+
+
 
             # (c) Advance each beam.
             select_indices_array = []

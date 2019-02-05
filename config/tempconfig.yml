@@ -1,0 +1,6 @@
+data: data/demo 
+save_model: demo-model 
+reinforce: true
+rnn_type: "LSTM" 
+rnn_size: 256 
+layers: 1
