@@ -2,6 +2,7 @@ from __future__ import division
 from argparse import ArgumentParser
 
 import xml.etree.ElementTree as ET
+import os
 
 def parse_and_output(lang, prefix, filename, tags, outputDir):
     tree = ET.parse(filename)
@@ -41,6 +42,9 @@ def main():
     filename = args.filename
     outputDir = args.outputDir
     tags_list = get_tag_list(args.tags)
+
+    assert os.path.isfile(filename), \
+        "Please check path of your input file!"
 
     parse_and_output(lang, prefix, filename, tags_list, outputDir)
 

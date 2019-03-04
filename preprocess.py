@@ -91,7 +91,9 @@ def build_save_dataset(corpus_type, fields, opt):
             use_filter_pred=corpus_type == 'train' or opt.filter_valid
         )
 
-        data_path = "{:s}.{:s}.{:d}.pt".format(opt.save_data, corpus_type, i)
+        prefix = opt.save_data.split('/')[-1]
+
+        data_path = "{:s}/{:s}.{:s}.{:d}.pt".format(opt.save_data, prefix, corpus_type, i)
         dataset_paths.append(data_path)
 
         logger.info(" * saving %sth %s data shard to %s."
@@ -114,7 +116,9 @@ def build_save_vocab(train_dataset, fields, opt):
         opt.tgt_vocab, opt.tgt_vocab_size, opt.tgt_words_min_frequency
     )
 
-    vocab_path = opt.save_data + '.vocab.pt'
+    prefix = opt.save_data.split('/')[-1]
+
+    vocab_path = opt.save_data + '/' + prefix + '.vocab.pt'
     torch.save(fields, vocab_path)
 
 
