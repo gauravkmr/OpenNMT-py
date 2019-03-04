@@ -1,0 +1,44 @@
+Steps to get and preprocess Hindi-English data. Process is same for other languages.
+
+We currently have Hindi-English data files on tesla: /data1/gauku/hin
+
+STEPS:
+
+#Getting data
+1.  Login to tesla
+2.  cd to the directory where you want to fetch files from ELISA server
+3.  Login to ELISA sftp server
+4.  Navigate to directory where file is located
+5.  Copy the required files
+    eg. to copy hin-eng files, run 'get elisa.hin*'
+
+
+#Unzip the data files
+cd /data1/gauku/hin
+tar xfz *.nomono.tgz
+cd *.nomono
+gunzip *.xml.gz
+
+
+#Create conda env
+conda create --name my_env python=3.6
+
+
+#Extracting sentence pairs
+1.  Clone OpenNMT-py, if not already done so
+    git clone https://github.com/gauravkmr/OpenNMT-py.git
+2.  cd OpenNMT-py
+3.  git checkout bilingual
+4.  source activate my_env
+5.  pip install -r requirements.txt
+6.  cd /scripts
+7.  Run the below command to generate source target pairs
+    #train
+    python extract_data.py -lang hin -prefix train \
+        -in ../../DARPA/elisa.hin.package.y3r1.v2.nomono/elisa.hin-eng.test.y3r1.v2.xml -tags "LRLP_TOKENIZED" -out ../data/
+    #test
+    python extract_data.py -lang hin -prefix test \
+        -in ../../DARPA/elisa.hin.package.y3r1.v2.nomono/elisa.hin-eng.test.y3r1.v2.xml -tags "LRLP_TOKENIZED" -out ../data/
+    #dev
+    python extract_data.py -lang hin -prefix test \
+        -in ../../DARPA/elisa.hin.package.y3r1.v2.nomono/elisa.hin-eng.test.y3r1.v2.xml -tags "LRLP_TOKENIZED" -out ../data/
