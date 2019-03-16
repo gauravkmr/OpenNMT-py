@@ -8,7 +8,7 @@ heads: 8
 encoder_type: transformer
 decoder_type: transformer
 position_encoding: 'true'
-train_steps: 36000
+train_steps: 5550
 max_generator_batches: 2
 dropout: 0.1
 batch_size: 4096
@@ -28,7 +28,7 @@ label_smoothing: 0.1
 #valid_steps: 10000
 valid_steps: 111
 report_every: 111
-save_checkpoint_steps: 2000
+save_checkpoint_steps: 111
 tensorboard: 'true'
 
 world_size: 1
