@@ -64,6 +64,10 @@ def build_save_dataset(corpus_type, fields, src_reader, tgt_reader, opt):
         )
 
         data_path = "{:s}.{:s}.{:d}.pt".format(opt.save_data, corpus_type, i)
+
+        # prefix = opt.save_data.split('/')[-1]
+        #
+        # data_path = "{:s}/{:s}.{:s}.{:d}.pt".format(opt.save_data, prefix, corpus_type, i)
         dataset_paths.append(data_path)
 
         logger.info(" * saving %sth %s data shard to %s."
@@ -87,6 +91,9 @@ def build_save_vocab(train_dataset, fields, opt):
         vocab_size_multiple=opt.vocab_size_multiple
     )
 
+    # prefix = opt.save_data.split('/')[-1]
+    #
+    # vocab_path = opt.save_data + '/' + prefix + '.vocab.pt'
     vocab_path = opt.save_data + '.vocab.pt'
     torch.save(fields, vocab_path)
 
