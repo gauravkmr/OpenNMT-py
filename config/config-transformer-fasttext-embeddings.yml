@@ -1,5 +1,5 @@
-data: /data1/gauku/lowresource_mt/zul/data/zul
-save_model: /data1/gauku/lowresource_mt/zul/models/zul_without_embeddings_transformer/zul_noembed_transformer
+data: /data1/gauku/lowresource_mt/hin/data/hin
+save_model: /data1/gauku/lowresource_mt/hin/models/hin_fasttext_embeddings_transformer/hin_fasttext_transformer
 layers: 6
 rnn_size: 512
 word_vec_size: 512
@@ -26,9 +26,13 @@ param_init_glorot: 'true'
 label_smoothing: 0.1
 
 #valid_steps: 10000
-valid_steps: 50
-report_every: 50
-save_checkpoint_steps: 100
+valid_steps: 111
+report_every: 111
+save_checkpoint_steps: 111
+
+pre_word_vecs_enc: /data1/gauku/lowresource_mt/hin/data/embeddings.enc.pt
+pre_word_vecs_dec: /data1/gauku/lowresource_mt/hin/data/embeddings.dec.pt
+
 tensorboard: 'true'
 
 world_size: 1
