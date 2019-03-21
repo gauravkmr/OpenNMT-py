@@ -70,7 +70,9 @@ python preprocess.py -train_src /data1/gauku/lowresource_mt/hin/data/hin_train_L
                      -train_tgt /data1/gauku/lowresource_mt/hin/data/hin_train_LRLP_TOKENIZED_TARGET.txt \
                      -valid_src /data1/gauku/lowresource_mt/hin/data/hin_dev_LRLP_TOKENIZED_SOURCE.txt \
                      -valid_tgt /data1/gauku/lowresource_mt/hin/data/hin_dev_LRLP_TOKENIZED_TARGET.txt \
-                     -save_data /data1/gauku/lowresource_mt/hin/data/hin
+                     -save_data /data1/gauku/lowresource_mt/hin/data/hin \
+                     -src_seq_length 150 \
+                     -tgt_seq_length 150
 
 Note:
 -save_data: last part ('hin' in this case) is used as filename prefix
@@ -82,6 +84,21 @@ Generated files:
         - hin.valid.0.pt
         - hin.vocab.pt
 
+
+#GENERATE EMBEDDINGS - fasttext
+cd OpenNMT-py
+cp tools/embeddings_to_torch.py .
+python embeddings_to_torch.py -emb_file_enc "/data1/reno/low_resource_mt/embeddings/wiki.hi.vec" \
+                                    -emb_file_dec "/data1/reno/low_resource_mt/embeddings/wiki.en.vec" \
+                                    -dict_file "/data1/gauku/lowresource_mt/hin/data/hin.vocab.pt" \
+                                    -output_file "/data1/gauku/lowresource_mt/hin/data/embeddings"
+
+
+#GENERATE EMBEDDINGS - muse
+python embeddings_to_torch.py -emb_file_enc "/data1/reno/low_resource_mt/embeddings/bilingual-hi.txt" \
+                                    -emb_file_dec "/data1/reno/low_resource_mt/embeddings/bilingual-en.txt" \
+                                    -dict_file "/data1/gauku/lowresource_mt/hin/data/hin.vocab.pt" \
+                                    -output_file "/data1/gauku/lowresource_mt/hin/data/muse_embeddings"
 
 
 #Training
