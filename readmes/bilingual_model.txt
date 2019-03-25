@@ -32,6 +32,10 @@ tar xfz *.nomono.tgz
 cd *.nomono
 gunzip *.xml.gz
 
+#Unzip monolingual data file
+cd /data1/gauku/lowresource_mt/hin/raw
+gunzip elisa.hin.y3r1.v2.xml.gz
+
 
 #Create conda env
 conda create --name my_env python=3.6
@@ -62,6 +66,14 @@ conda create --name my_env python=3.6
     python extract_data.py -lang hin -prefix dev \
         -in /data1/gauku/lowresource_mt/hin/raw/elisa.hin.package.y3r1.v2.nomono/elisa.hin-eng.dev.y3r1.v2.xml
         -tags "LRLP_TOKENIZED"
+        -out /data1/gauku/lowresource_mt/hin/data/
+
+
+#Extracting monolingual data
+cd OpenNMT-py/scripts
+python extract_monolingual_data.py -lang hin \
+        -in /data1/gauku/lowresource_mt/hin/raw/elisa.hin.y3r1.v2.xml \
+        -tags "LRLP_TOKENIZED" \
         -out /data1/gauku/lowresource_mt/hin/data/
 
 
