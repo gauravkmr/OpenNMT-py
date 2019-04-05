@@ -1,0 +1,11 @@
+data: /data1/gauku/lowresource_mt/som/data/som
+save_model: /data1/gauku/lowresource_mt/som/models/som_without_embeddings_baseline/som_without_embedding
+train_steps: 75800
+valid_steps: 758
+report_every: 758
+save_checkpoint_steps: 1516
+tensorboard: 'true'
+
+world_size: 1
+gpu_ranks:
+- 0
