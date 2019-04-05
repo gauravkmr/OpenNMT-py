@@ -115,6 +115,10 @@ python embeddings_to_torch.py -emb_file_enc "/data1/reno/low_resource_mt/embeddi
 
 #Training
 1.  BASELINE RNN MODEL
+    python train.py -config config/config-rnn-base.yml
+
+    OR
+
     python train.py -data /data1/gauku/lowresource_mt/hin/data/hin \
                 -save_model /data1/gauku/lowresource_mt/hin/models/hin_without_embeddings_baseline/hin_without_embedding \
                 -world_size 2 \
