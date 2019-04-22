@@ -103,7 +103,7 @@ cp tools/embeddings_to_torch.py .
 python embeddings_to_torch.py -emb_file_enc "/data1/reno/low_resource_mt/embeddings/wiki.hi.vec" \
                                     -emb_file_dec "/data1/reno/low_resource_mt/embeddings/wiki.en.vec" \
                                     -dict_file "/data1/gauku/lowresource_mt/hin/data/hin.vocab.pt" \
-                                    -output_file "/data1/gauku/lowresource_mt/hin/data/embeddings"
+                                    -output_file "/data1/gauku/lowresource_mt/hin/data/fasttext_embeddings"
 
 
 #GENERATE EMBEDDINGS - muse
@@ -143,7 +143,30 @@ python embeddings_to_torch.py -emb_file_enc "/data1/reno/low_resource_mt/embeddi
 
 
 #Translate
-python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_without_embeddings_baseline/hin_without_embedding_step_100000.pt
-                    -src /data1/gauku/lowresource_mt/hin/data/hin_test_LRLP_TOKENIZED_SOURCE.txt
-                    -output /data1/gauku/lowresource_mt/hin/data/hin_test_LRLP_TOKENIZED_MODELPRED.txt
+python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_without_embeddings_baseline/hin_without_embedding_step_100000.pt \
+                    -src /data1/gauku/lowresource_mt/hin/data/hin_test_LRLP_TOKENIZED_SOURCE.txt \
+                    -output /data1/gauku/lowresource_mt/hin/data/hin_test_LRLP_TOKENIZED_MODELPRED.txt \
+                    -replace_unk -verbose
+
+
+
+python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_without_embeddings_baseline/hin_without_embedding_step_100000.pt \
+                    -src /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.hi \
+                    -output /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.en.hin_without_embedding_step_100000.pt \
+                    -replace_unk -verbose
+
+
+python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_without_embeddings_transformer/hin_noembed_transformer_step_5550.pt \
+                    -src /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.hi \
+                    -output /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.en.hin_noembed_transformer_step_5550.pt \
+                    -replace_unk -verbose
+
+python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_fasttext_embeddings_transformer/hin_fasttext_transformer_step_5000.pt \
+                    -src /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.hi \
+                    -output /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.en.hin_fasttext_transformer_step_5000.pt \
+                    -replace_unk -verbose
+
+python translate.py -model /data1/gauku/lowresource_mt/hin/models/hin_muse_embeddings_transformer/hin_muse_transformer_step_5000.pt \
+                    -src /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.hi \
+                    -output /data1/gauku/lowresource_mt/hin/data/external/dev_test/test.en.hin_muse_transformer_step_5000.pt \
                     -replace_unk -verbose
