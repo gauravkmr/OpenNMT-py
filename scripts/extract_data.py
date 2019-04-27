@@ -19,7 +19,7 @@ def get_tag_list(tags):
     tags = []
     for t in tags_l:
         tags.append(t + '_SOURCE')
-        tags.append(t + '_TARGET')
+        #tags.append(t + '_TARGET')
     return tags
 
 def main():
@@ -34,8 +34,8 @@ def main():
 
     args = parser.parse_args()
     prefix = args.prefix.lower()
-    if prefix not in ['train', 'dev', 'test']:
-        print("Prefix should be 'train', 'dev', or 'test'")
+    if prefix not in ['train', 'dev', 'test', 'eval']:
+        print("Prefix should be 'train', 'dev', 'test', or 'eval'")
         exit(1)
 
     lang = args.language

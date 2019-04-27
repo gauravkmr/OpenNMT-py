@@ -1,5 +1,5 @@
-data: /data1/gauku/lowresource_mt/hin/data/hin
-save_model: /data1/gauku/lowresource_mt/hin/models/hin_muse_embeddings_transformer/hin_muse_transformer
+data: /data1/gauku/lowresource_mt/zul/data/zul
+save_model: /data1/gauku/lowresource_mt/zul/models/zul_muse_embeddings_transformer/zul_muse_transformer
 layers: 6
 rnn_size: 512
 word_vec_size: 512
@@ -8,7 +8,7 @@ heads: 8
 encoder_type: transformer
 decoder_type: transformer
 position_encoding: 'true'
-train_steps: 5000
+train_steps: 10000
 max_generator_batches: 2
 dropout: 0.1
 batch_size: 4096
@@ -26,12 +26,12 @@ param_init_glorot: 'true'
 label_smoothing: 0.1
 
 #valid_steps: 10000
-valid_steps: 111
-report_every: 111
-save_checkpoint_steps: 111
+valid_steps: 200
+report_every: 200
+save_checkpoint_steps: 200
 
-pre_word_vecs_enc: /data1/gauku/lowresource_mt/hin/data/muse_embeddings.enc.pt
-pre_word_vecs_dec: /data1/gauku/lowresource_mt/hin/data/muse_embeddings.dec.pt
+pre_word_vecs_enc: /data1/gauku/lowresource_mt/zul/data/muse_embeddings.enc.pt
+pre_word_vecs_dec: /data1/gauku/lowresource_mt/zul/data/muse_embeddings.dec.pt
 
 tensorboard: 'true'
 

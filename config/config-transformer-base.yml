@@ -1,5 +1,5 @@
-data: /data1/gauku/lowresource_mt/zul/data/zul
-save_model: /data1/gauku/lowresource_mt/zul/models/zul_without_embeddings_transformer/zul_noembed_transformer
+data: /data1/gauku/lowresource_mt/som/data/som
+save_model: /data1/gauku/lowresource_mt/som/models/som_without_embeddings_transformer/som_noembed_transformer
 layers: 6
 rnn_size: 512
 word_vec_size: 512
@@ -8,7 +8,7 @@ heads: 8
 encoder_type: transformer
 decoder_type: transformer
 position_encoding: 'true'
-train_steps: 5000
+train_steps: 6950
 max_generator_batches: 2
 dropout: 0.1
 batch_size: 4096
@@ -26,9 +26,9 @@ param_init_glorot: 'true'
 label_smoothing: 0.1
 
 #valid_steps: 10000
-valid_steps: 50
-report_every: 50
-save_checkpoint_steps: 100
+valid_steps: 139
+report_every: 139
+save_checkpoint_steps: 139
 tensorboard: 'true'
 
 world_size: 1
